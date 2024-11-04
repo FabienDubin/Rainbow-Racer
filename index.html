@@ -7,6 +7,48 @@
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body>
+    <main>
+      <!-- GAME INTRO //Splash screen and instructions -->
+      <div id="welcome-screen">
+        <div id="window-intro">
+          <img id="logo-img" src="../Assets/img/Logo.png" alt="Game logo" />
+          <p>
+            Guide your unicorn through a vibrant adventure—dodge clouds, collect
+            colorful balls to earn points, and blast clouds out of the way!
+            <br />
+            Use the arrow keys to move and press space to shoot.
+            <br /><br />
+            <span color> Ready to dash?</span>
+          </p>
+
+          <button>START GAME</button>
+        </div>
+      </div>
+      <!-- GAME SCREEN  -->
+      <div id="game-screen">
+        <div id="game-stats">
+          <div id="lives">
+            <img src="../Assets/img/Life.png" alt="live" /><img
+              src="../Assets/img/Life.png"
+              alt="live"
+            /><img src="../Assets/img/Life.png" alt="live" />
+          </div>
+          <h2>SCORE: <span id="score">0</span></h2>
+          <!-- ### Add in interation 3<div id="poop">poop</div> -->
+        </div>
+        <div id="#game_container"></div>
+      </div>
+
+      <!-- GAME END SCREEN -->
+      <div id="end-screen">
+        <div id="game-end">
+          <img id="logo-img" src="../Assets/img/Logo.png" alt="Game logo" />
+          <h1>GAME OVER</h1>
+          <button>START NEW GAME</button>
+        </div>
+      </div>
+    </main>
+
     <script type="text/javascript" src="./js/index.js"></script>
   </body>
 </html>
