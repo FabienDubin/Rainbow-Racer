@@ -24,34 +24,36 @@ class Player {
   //methods
   move() {
     // update player's position when move
-    this.directionX += this.left;
-    this.directionY += this.top;
+    this.left += this.directionX;
+    this.top += this.directionY;
 
     // Setting boundaries to the border of the screen
     // Horizontally
     // Left side
-    if (this.left < 10) {
-      this.left = 10;
+    if (this.left < -5) {
+      this.left = -5;
     }
     //Right side
-    if (this.left > this.gameScreen.offsetWidth - this.width - 10) {
-      this.left = this.gameScreen.offsetWidth - this.width - 10;
+    if (this.left > 95) {
+      this.left = 95;
     }
 
     //Vertically
     //top side
-    if (this.top < 10) {
-      this.top = 10;
+    if (this.top < 0) {
+      this.top = 0;
     }
     //bottom side
-    if (this.top > this.gameScreen.offsetWidth - this.height - 10) {
-      this.top = this.gameScreen.offsetWidth - this.height - 10;
+    if (this.top > 97) {
+      this.top = 97;
     }
+
+    this.updatePosition();
   }
   // update player's position
   updatePosition() {
-    this.element.style.left = `${left}vw`;
-    this.element.style.top = `${top}vh`;
+    this.element.style.left = `${this.left}vw`;
+    this.element.style.top = `${this.top}vh`;
   }
 
   didCollide(obstacle) {

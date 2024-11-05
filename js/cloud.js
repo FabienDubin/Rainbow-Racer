@@ -1,12 +1,14 @@
-class Component {
-  constructor(width, height, ComponentImg) {
+class Cloud {
+  constructor(gameScreen) {
+    this.gameScreen = gameScreen;
+    this.height = 25;
+    this.width = 30;
     this.left = 90;
     this.top = Math.floor(Math.random() * 100);
-    this.width = width;
-    this.height = height;
+
     this.element = document.createElement("img");
 
-    this.element.src = ComponentImg;
+    this.element.src = "../assets/img/NaughtyCloud.png";
     this.element.style.position = "absolute";
     this.element.style.width = `${this.width}vw`;
     this.element.style.height = `${this.height}vh`;
@@ -24,7 +26,7 @@ class Component {
 
   // move the component from right to left
   move() {
-    this.left -= 1;
+    this.left -= 0.5;
     this.updatePosition();
   }
 }
