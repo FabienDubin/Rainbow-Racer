@@ -6,7 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
-  <body>
+  <body id="background">
     <main>
       <!-- GAME INTRO //Splash screen and instructions -->
       <div id="welcome-screen">
@@ -28,7 +28,11 @@
       <div id="game-screen">
         <div id="game-stats">
           <div id="lives"></div>
-          <h2>SCORE: <span id="score">0</span></h2>
+          <div>
+            <h2>SCORE: <span id="score">0</span></h2>
+            <h4>High Score : <span id="high-score">0</span></h4>
+          </div>
+
           <!-- ### Add in interation 3<div id="poop">poop</div> -->
         </div>
         <div id="#game_container"></div>
@@ -48,6 +52,9 @@
       </div>
     </main>
 
+    <script type="text/javascript" src="./js/star.js"></script>
+    <script type="text/javascript" src="./js/rainbow.js"></script>
+    <script type="text/javascript" src="./js/ball.js"></script>
     <script type="text/javascript" src="./js/cloud.js"></script>
     <script type="text/javascript" src="./js/player.js"></script>
     <script type="text/javascript" src="./js/game.js"></script>

@@ -7,6 +7,7 @@ class Player {
     this.height = height;
     this.directionX = 0;
     this.directionY = 0;
+    this.playerImg = [];
     this.element = document.createElement("img");
 
     // src to be updated to have animated wings

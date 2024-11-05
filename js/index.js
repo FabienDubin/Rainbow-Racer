@@ -18,8 +18,9 @@ window.onload = function () {
     // create the new game
     myGame = new Game();
     // starts the new game (via method )
+    console.log(myGame.highScore);
     myGame.start();
-    console.log(myGame);
+    // console.log(myGame);
   }
 
   //Keyboard listening to control the player
@@ -36,14 +37,19 @@ window.onload = function () {
         break;
       case "ArrowLeft":
         myGame.player.directionX = -1;
-        console.log(myGame.player.left);
         break;
       case "ArrowRight":
         myGame.player.directionX = 1;
         break;
 
+      case "Space":
+        if (myGame.score > 5) {
+          const starLeft = myGame.player.left + 1;
+          const starTop = myGame.player.top - 1;
+          myGame.stars.push(new Star(starLeft, starTop));
+          myGame.removePoint();
+        }
       // !!!!Extra features!!!!
-      //   case "Space" :
       //   case "KeyP" :
     }
   });

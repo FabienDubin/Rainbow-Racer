@@ -2,7 +2,7 @@
 
 :root {
   --pinkGra: linear-gradient(#ff83c7, #ffccd2);
-  --purpleGra: linear-gradient(#f9d4f5, #bda3e9);
+  --purpleGra: linear-gradient(#bda3e9, #f9d4f5);
   --greenGra: linear-gradient(#c2e7a3, #75daed);
   --yellow: #f8d75f;
 }
@@ -11,10 +11,13 @@ body {
   padding: 0;
   text-align: center;
   font-family: Roboto;
-  background: var(--pinkGra);
 
   position: relative;
   overflow: hidden;
+}
+
+#background {
+  background: var(--pinkGra);
 }
 
 /* Bakground animation */
@@ -141,7 +144,26 @@ h3 {
   position: relative;
   overflow: hidden;
 }
+
 h2 {
   color: white;
-  text-align: center;
+  text-align: left;
+}
+
+h4 {
+  color: white;
+  font-size: 0.8em;
+  margin-top: -20px;
+  opacity: 0.7;
+  text-align: left;
+}
+
+.blink {
+  animation: blinker 0.2s cubic-bezier(0.5, 0, 1, 1) infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0.2;
+  }
 }

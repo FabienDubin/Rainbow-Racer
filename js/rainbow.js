@@ -1,12 +1,14 @@
-class Component {
-  constructor(width, height, ComponentImg) {
-    this.left = 90;
+class Rainbow {
+  constructor(gameScreen) {
+    this.gameScreen = gameScreen;
+    this.height = 5;
+    this.width = 5;
+    this.left = 100;
     this.top = Math.floor(Math.random() * 100);
-    this.width = width;
-    this.height = height;
+    this.points = 50;
     this.element = document.createElement("img");
 
-    this.element.src = ComponentImg;
+    this.element.src = "../assets/img/Rainbow.png";
     this.element.style.position = "absolute";
     this.element.style.width = `${this.width}vw`;
     this.element.style.height = `${this.height}vh`;
@@ -24,7 +26,7 @@ class Component {
 
   // move the component from right to left
   move() {
-    this.left -= 1;
+    this.left -= 0.7;
     this.updatePosition();
   }
 }
