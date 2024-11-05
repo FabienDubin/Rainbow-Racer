@@ -1,17 +1,17 @@
 class Cloud {
   constructor(gameScreen) {
     this.gameScreen = gameScreen;
-    this.height = 25;
-    this.width = 30;
-    this.left = 90;
+    this.height = 15;
+    this.width = 20;
+    this.left = 180;
     this.top = Math.floor(Math.random() * 100);
-
+    this.sizeCoef = Math.ceil(Math.random() * 3);
     this.element = document.createElement("img");
 
     this.element.src = "../assets/img/NaughtyCloud.png";
     this.element.style.position = "absolute";
-    this.element.style.width = `${this.width}vw`;
-    this.element.style.height = `${this.height}vh`;
+    this.element.style.width = `${this.width * this.sizeCoef}vw`;
+    this.element.style.height = `${this.height * this.sizeCoef}vh`;
     this.element.style.left = `${this.left}vw`;
     this.element.style.top = `${this.top}vh`;
 

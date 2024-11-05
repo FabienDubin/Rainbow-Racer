@@ -3,8 +3,14 @@ window.onload = function () {
   const restartButton = document.getElementById("restart-btn");
   let myGame;
 
+  //start button on startScreen
   startButton.addEventListener("click", function () {
     startGame();
+  });
+
+  //restart button on endScreen
+  restartButton.addEventListener("click", function () {
+    window.location.reload();
   });
 
   function startGame() {
@@ -19,7 +25,7 @@ window.onload = function () {
   //Keyboard listening to control the player
   //When a key is pressed
   document.addEventListener("keydown", (event) => {
-    console.log("key pressed!", event.code);
+    // console.log("key pressed!", event.code);
 
     switch (event.code) {
       case "ArrowUp":
@@ -44,7 +50,7 @@ window.onload = function () {
 
   //When a key is released
   document.addEventListener("keyup", (event) => {
-    console.log("key released!", event.code);
+    // console.log("key released!", event.code);
     switch (event.code) {
       case "ArrowUp":
       case "ArrowDown":

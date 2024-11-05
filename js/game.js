@@ -3,6 +3,9 @@ class Game {
     this.startScreen = document.querySelector("#welcome-screen");
     this.gameScreen = document.querySelector("#game-screen");
     this.gameEndScreen = document.querySelector("#end-screen");
+    this.scoreElement = document.querySelector("#score");
+    this.finalScoreElement = document.querySelector("#final-score");
+    this.livesElement = document.querySelector("#lives");
     this.player = new Player(
       this.gameScreen,
       2,
@@ -32,6 +35,8 @@ class Game {
     this.startScreen.style.display = "none";
     // display the game screen
     this.gameScreen.style.display = "block";
+    //Create the lives
+    this.updateLives();
     // run the game loop
     this.gameIntervalId = setInterval(() => {
       this.gameLoop();
@@ -59,6 +64,7 @@ class Game {
     //continous update of the player's position
     this.player.move();
 
+    ////---------CLOUDS-----------------///
     //Checking collision with a cloud if the wloud is on screen
     this.clouds.forEach((oneCloud, oneCloudIndex) => {
       oneCloud.move();
@@ -68,14 +74,17 @@ class Game {
         oneCloud.element.remove();
         this.clouds.splice(oneCloudIndex, 1);
         this.lives--;
+        this.updateLives();
         // LOOK FOR UDATING THE DOM !!!!
 
         // if the cloud did not collide
       } else if (oneCloud.left < -100) {
         oneCloud.element.remove();
         this.clouds.splice(oneCloudIndex, 1);
-        // LOOK FOR UDATING THE DOM !!!!
+        // TO BE REMOVED WHEN Ball are implemented
         this.score++;
+        console.log(this.score);
+        this.scoreElement.innerText = this.score;
       }
     });
 
@@ -83,5 +92,38 @@ class Game {
     if (this.lives === 0) {
       this.endGame();
     }
+  }
+
+  updateLives() {
+    this.livesElement.innerHTML = "";
+    for (let i = 0; i < this.lives; i++) {
+      const newLife = document.createElement("img");
+      newLife.src = "../Assets/img/Life.png";
+      newLife.alt = "live";
+
+      this.livesElement.appendChild(newLife);
+    }
+  }
+
+  //Ending game when lives = 0
+  endGame() {
+    // removes the player from the game screen
+    this.player.element.remove();
+    // removes the clouds from the game screen
+    this.clouds.forEach((cloud) => {
+      cloud.element.remove();
+    });
+
+    //set gameIsOver to true
+    this.gameIsOver = true;
+
+    // Displays player's score
+    this.finalScoreElement.innerText = this.score;
+    console.log(this.score);
+
+    // hidez the game screen
+    this.gameScreen.style.display = "none";
+    // displays the end screen
+    this.gameEndScreen.style.display = "flex";
   }
 }
