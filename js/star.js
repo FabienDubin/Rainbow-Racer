@@ -1,8 +1,8 @@
 class Star {
   constructor(positionX, positionY) {
     this.gameScreen = document.querySelector("#game-screen");
-    this.height = 2;
-    this.width = 1;
+    this.height = 3;
+    this.width = 1.5;
     this.left = positionX;
     this.top = positionY;
     this.imgArray = [

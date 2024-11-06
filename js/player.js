@@ -1,5 +1,5 @@
 class Player {
-  constructor(gameScreen, left, top, width, height, playerImage) {
+  constructor(gameScreen, left, top, width, height) {
     this.gameScreen = gameScreen;
     this.left = left;
     this.top = top;
@@ -7,12 +7,17 @@ class Player {
     this.height = height;
     this.directionX = 0;
     this.directionY = 0;
-    this.playerImg = [];
+    this.playerImg = [
+      "../assets/img/Unicorn-wings-up.png",
+      "../assets/img/Unicorn-wings-middle.png",
+      "../assets/img/Unicorn-wings-down.png",
+    ];
+    this.currentPlayerImgIndex = 0;
     this.element = document.createElement("img");
 
     // src to be updated to have animated wings
     // !!!!!!!!!! POSSIBLE BUG ON POSITIONING DUE TO VH VW
-    this.element.src = playerImage;
+    this.element.src = this.playerImg[this.currentPlayerImgIndex];
     this.element.style.position = "absolute";
     this.element.style.left = `${left}vw`;
     this.element.style.top = `${top}vh`;
@@ -20,6 +25,8 @@ class Player {
     this.element.style.height = `${height}vh`;
 
     this.gameScreen.appendChild(this.element);
+
+    this.flappingWings();
   }
 
   //methods
@@ -71,5 +78,17 @@ class Player {
     } else {
       return false;
     }
+  }
+
+  flappingWings() {
+    setInterval(() => {
+      if (this.currentPlayerImgIndex === this.playerImg.length - 1) {
+        this.currentPlayerImgIndex = 0;
+        this.element.src = this.playerImg[this.currentPlayerImgIndex];
+      } else {
+        this.currentPlayerImgIndex++;
+        this.element.src = this.playerImg[this.currentPlayerImgIndex];
+      }
+    }, 200);
   }
 }

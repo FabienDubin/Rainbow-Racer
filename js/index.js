@@ -31,9 +31,11 @@ window.onload = function () {
     switch (event.code) {
       case "ArrowUp":
         myGame.player.directionY = -1;
+
         break;
       case "ArrowDown":
         myGame.player.directionY = 1;
+
         break;
       case "ArrowLeft":
         myGame.player.directionX = -1;
@@ -44,8 +46,8 @@ window.onload = function () {
 
       case "Space":
         if (myGame.score > 5) {
-          const starLeft = myGame.player.left + 1;
-          const starTop = myGame.player.top - 1;
+          const starLeft = myGame.player.left + 6;
+          const starTop = myGame.player.top + 2;
           myGame.stars.push(new Star(starLeft, starTop));
           myGame.removePoint();
         }

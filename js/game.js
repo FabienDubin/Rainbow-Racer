@@ -9,24 +9,19 @@ class Game {
     this.backgroundElement = document.querySelector("#background");
     this.highScoreElement = document.querySelector("#high-score");
 
-    this.player = new Player(
-      this.gameScreen,
-      2,
-      50,
-      6,
-      8,
-      "../assets/img/Unicorn-wings-up.png"
-    );
+    this.player = new Player(this.gameScreen, 2, 50, 6, 8);
     // Check if height and width in % are ok
     this.height = 100;
     this.width = 100;
+
     this.clouds = [];
     this.balls = [];
     this.rainbows = [];
     this.stars = [];
     this.score = 0;
-    this.lives = 3;
     this.highScore = localStorage.getItem("highScore");
+    this.lives = 3;
+    this.remainingTime = 60;
     this.gameIsOver = false;
     this.gameIntervalId;
     this.gameloopFrequency = Math.round(1000 / 60);
@@ -79,7 +74,7 @@ class Game {
     }
 
     //generating rainbows 🌈 CHANGE VALUE TO 1800
-    if (this.frames % 180 === 0) {
+    if (this.frames % 1000 === 0) {
       this.rainbows.push(new Rainbow(this.gameScreen));
     }
   }
@@ -213,6 +208,8 @@ class Game {
       this.livesElement.appendChild(newLife);
     }
   }
+
+  countdown() {}
 
   //Remove 5 points when shoot a star
   removePoint() {
