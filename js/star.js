@@ -6,10 +6,10 @@ class Star {
     this.left = positionX;
     this.top = positionY;
     this.imgArray = [
-      "../assets/img/StarGreen.png",
-      "../assets/img/StarYellow.png",
-      "../assets/img/StarPurple.png",
-      "../assets/img/StarPink.png",
+      "assets/img/StarGreen.png",
+      "assets/img/StarYellow.png",
+      "assets/img/StarPurple.png",
+      "assets/img/StarPink.png",
     ];
     this.randomImgIndex = Math.floor(Math.random() * this.imgArray.length);
     this.points = 25;

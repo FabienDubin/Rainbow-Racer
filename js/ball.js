@@ -6,10 +6,10 @@ class Ball {
     this.left = 100;
     this.top = Math.floor(Math.random() * 100);
     this.imgArray = [
-      "../assets/img/YellowBall.png",
-      "../assets/img/GreenBall.png",
-      "../assets/img/PurpleBall.png",
-      "../assets/img/PinkBall.png",
+      "assets/img/YellowBall.png",
+      "assets/img/GreenBall.png",
+      "assets/img/PurpleBall.png",
+      "assets/img/PinkBall.png",
     ];
     this.randomImgIndex = Math.floor(Math.random() * this.imgArray.length);
     this.points = 10;

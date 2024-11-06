@@ -18,7 +18,7 @@ window.onload = function () {
     // create the new game
     myGame = new Game();
     // starts the new game (via method )
-    console.log(myGame.highScore);
+
     myGame.start();
     // console.log(myGame);
   }
@@ -49,10 +49,19 @@ window.onload = function () {
           const starLeft = myGame.player.left + 6;
           const starTop = myGame.player.top + 2;
           myGame.stars.push(new Star(starLeft, starTop));
-          myGame.removePoint();
+          myGame.addPoints(-5);
         }
-      // !!!!Extra features!!!!
-      //   case "KeyP" :
+        break;
+      case "KeyP":
+        console.log("P pressed", event.code);
+        if (myGame.poop > 0) {
+          myGame.poop--;
+          // const starLeft = myGame.player.left - 6;
+          // const starTop = myGame.player.top + 3;
+          myGame.poops.push(new Poop(50, 0));
+          myGame.addPoints(100);
+        }
+        break;
     }
   });
 
@@ -72,7 +81,7 @@ window.onload = function () {
     }
 
     // !!!!Extra features!!!!
-    //   case "Space" :
+
     //   case "KeyP" :
   });
 };

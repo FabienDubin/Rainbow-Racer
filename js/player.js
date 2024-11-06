@@ -8,9 +8,9 @@ class Player {
     this.directionX = 0;
     this.directionY = 0;
     this.playerImg = [
-      "../assets/img/Unicorn-wings-up.png",
-      "../assets/img/Unicorn-wings-middle.png",
-      "../assets/img/Unicorn-wings-down.png",
+      "assets/img/Unicorn-wings-up.png",
+      "assets/img/Unicorn-wings-middle.png",
+      "assets/img/Unicorn-wings-down.png",
     ];
     this.currentPlayerImgIndex = 0;
     this.element = document.createElement("img");

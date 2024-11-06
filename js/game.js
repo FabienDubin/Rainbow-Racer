@@ -6,6 +6,7 @@ class Game {
     this.scoreElement = document.querySelector("#score");
     this.finalScoreElement = document.querySelector("#final-score");
     this.livesElement = document.querySelector("#lives");
+    this.poopsElement = document.querySelector("#poops");
     this.backgroundElement = document.querySelector("#background");
     this.highScoreElement = document.querySelector("#high-score");
     this.timerElement = document.querySelector("#timer");
@@ -19,12 +20,15 @@ class Game {
     this.clouds = [];
     this.balls = [];
     this.rainbows = [];
+    this.rainbowCounter = 0;
     this.stars = [];
     this.score = 0;
     this.highScore = localStorage.getItem("highScore");
     this.lives = 3;
+    this.poops = [];
+    this.poop = 0;
     this.timer = null;
-    this.setTimer = 100;
+    this.setTimer = 90;
     this.remainingTime = this.setTimer;
     this.gameIsOver = false;
     this.gameIntervalId;
@@ -38,7 +42,11 @@ class Game {
       "--yellow",
     ];
     this.backgroundColorIndex = 0;
-    this.backgroundInterval = 0;
+    this.progressBarColorIndex = this.backgroundColorIndex + 1;
+
+    this.music = new Audio("assets/sound/RainbowRaceTheme.mp3");
+    this.music.volume = 0.1;
+    this.
   }
 
   start() {
@@ -52,8 +60,12 @@ class Game {
     this.gameScreen.style.display = "flex";
     //Create the lives
     this.updateLives(1);
+    this.updatePoops(1);
     //Create the countdown
     this.updateCountdown();
+
+    //🎵----Music---- //
+    this.music.play();
 
     // run the game loop
     this.gameIntervalId = setInterval(() => {
@@ -72,17 +84,17 @@ class Game {
     }
 
     //🌩️ generating clouds 🌩️
-    if (this.frames % 100 === 0) {
+    if (this.frames % 90 === 0) {
       this.clouds.push(new Cloud(this.gameScreen));
     }
 
     //🎈 generating balls 🎈
-    if (this.frames % 180 === 0) {
+    if (this.frames % 120 === 0) {
       this.balls.push(new Ball(this.gameScreen));
     }
 
     //🌈 generating rainbows 🌈CHANGE VALUE TO 1800
-    if (this.frames % 400 === 0) {
+    if (this.frames % 500 === 0) {
       this.rainbows.push(new Rainbow(this.gameScreen));
     }
   }
@@ -96,7 +108,7 @@ class Game {
     ////🌩️---------CLOUDS----------------🌩️///
     //Checking collision with a cloud if the wloud is on screen
     this.clouds.forEach((oneCloud, oneCloudIndex) => {
-      oneCloud.move();
+      oneCloud.move(0.5);
 
       if (this.player.didCollide(oneCloud)) {
         //Remove cloud from the DOM
@@ -149,12 +161,21 @@ class Game {
         oneRainbow.element.remove();
         this.rainbows.splice(oneRainbowIndex, 1);
 
+        //Increment in the poop counter
+        this.rainbowCounter++;
+        if (this.rainbowCounter === 3) {
+          this.poop++;
+          console.log("poop++", this.poop);
+          this.updatePoops(1);
+          this.rainbowCounter = 0;
+        }
+
         // //Add one extra live
         // this.lives++;
         // this.updateLives(1);
 
         //Full fill remainingTime
-        this.remainingTime = this.setTimer;
+        this.remainingTime += this.setTimer;
         this.updateCountdown();
 
         //Adds points to the score
@@ -163,7 +184,7 @@ class Game {
 
         //looping over the background colors animation
         console.log("before the loop");
-        this.changeBackground("rainbow");
+        this.changeBackground("rainbow", 100, 9);
 
         // if the rainbow did not collide
       } else if (oneRainbow.left < -5) {
@@ -194,6 +215,38 @@ class Game {
       });
     });
 
+    //💩--------------POOP------------------💩//
+    this.poops.forEach((onePoop, onePoopIndex) => {
+      onePoop.move();
+      this.updatePoops(-1);
+      //Full fill remainingTime
+      this.remainingTime = this.setTimer * 2;
+      this.clouds.forEach((oneCloud, oneCloudIndex) => {
+        //XXXX Stop the cloud
+        oneCloud.move(0);
+        oneCloud;
+        console.log(this.clouds);
+        console.log(this.clouds.length);
+        //Remove all the clouds
+        this.clouds.splice(oneCloudIndex, 1);
+        oneCloud.element.remove();
+      });
+      // Remove the poop from the array and the DOM
+
+      if (onePoop.top > 85) {
+        onePoop.element.classList.add("hidden");
+        this.poops.splice(onePoopIndex, 1);
+        onePoop.element.remove();
+        //Add 0ne live
+        this.lives++;
+        this.updateLives(1);
+        this.updateCountdown();
+        //Add points and update the DOM score element
+        this.score += onePoop.points;
+        this.scoreElement.innerText = this.score;
+      }
+    });
+
     //🔥--------------HIGHSCORE------------🔥//
     //Display HighScore if it exists
     this.highScoreElement.innerText = this.highScore;
@@ -204,6 +257,12 @@ class Game {
 
     //💔-------Remove a life when remaingtime = 0-------💔//
     if (this.remainingTime === 0) {
+      if (this.poop < 0) {
+        this.poop--;
+        this.updatePoops(-1);
+        this.remainingTime += 20;
+      }
+
       this.lives--;
       this.updateLives(-1);
       this.remainingTime += 10;
@@ -217,14 +276,14 @@ class Game {
     }
   }
 
-  //🆙---Update lives depending on argument (1 or -1)--//
+  //🆙---Update lives depending on argument (1 or -1)--🆙//
   updateLives(arg) {
     //----If loose a live---//
     if (arg === -1) {
       this.livesElement.innerHTML = "";
       for (let i = 0; i < this.lives; i++) {
         const newLife = document.createElement("img");
-        newLife.src = "../Assets/img/Life.png";
+        newLife.src = "Assets/img/Life.png";
         newLife.alt = "live";
 
         this.livesElement.appendChild(newLife);
@@ -234,12 +293,12 @@ class Game {
           this.player.element.classList.remove("blink");
         }, 1000);
       }
-      //----If get an extro life---//
+      //----If get an extra life---//
     } else if (arg === 1) {
       this.livesElement.innerHTML = "";
       for (let i = 0; i < this.lives; i++) {
         const newLife = document.createElement("img");
-        newLife.src = "../Assets/img/Life.png";
+        newLife.src = "Assets/img/Life.png";
         newLife.alt = "live";
 
         this.livesElement.appendChild(newLife);
@@ -249,6 +308,37 @@ class Game {
           // this.livesElement.element.classList.remove("blink");
           this.livesElement.classList.remove("blink");
         }, 1000);
+      }
+    } else {
+      console.log("!!!!!!!!!!!Argument not set");
+    }
+  }
+
+  //🆙---Update poops bonus depending on argument (1 or -1)--🆙//
+  updatePoops(arg) {
+    //----If player drop a poop---//
+    if (arg === -1) {
+      this.poopsElement.innerHTML = "";
+      for (let i = 0; i < this.poop; i++) {
+        const newLife = document.createElement("img");
+        newLife.src = "Assets/img/Poop.png";
+        newLife.alt = "poop";
+        this.poopsElement.appendChild(newPoop);
+        //--Player blink---/
+        this.changeBackground("poop", 100, 15);
+      }
+      //----If player gets a poop---//
+    } else if (arg === 1) {
+      // console.log("get new poop in updatePoop!", this.poop);
+      this.poopsElement.innerHTML = "";
+      for (let i = 0; i < this.poop; i++) {
+        const newPoop = document.createElement("img");
+        newPoop.src = "Assets/img/Poop.png";
+        newPoop.alt = "poop";
+
+        this.poopsElement.appendChild(newPoop);
+        //--Backgroung blink---/
+        this.changeBackground("poop", 100, 9);
       }
     } else {
       console.log("!!!!!!!!!!!Argument not set");
@@ -269,7 +359,7 @@ class Game {
   }
 
   //Change Background color
-  changeBackground(arg) {
+  changeBackground(arg, speed, times) {
     switch (arg) {
       //Rainbows as argument
       case "rainbow":
@@ -284,21 +374,16 @@ class Game {
           `var(${this.backgroundColorArray[this.backgroundColorIndex]}`
         );
         //-- Changing the progress bar color
-        let progressBarColorIndex = this.backgroundColorIndex + 1;
-        if (progressBarColorIndex < this.backgroundColorArray - 1) {
+
+        if (this.progressBarColorIndex < this.backgroundColorArray.length - 1) {
+          this.progressBarColorIndex++;
+        } else {
+          this.progressBarColorIndex = 0;
         }
-        ///------------------------------------------------------
+
         this.progressBarElement.style.setProperty(
           "background",
-          `var(${this.backgroundColorArray[colorIndex]}`
-        );
-        console.log(
-          "BGcolor = ",
-          `var(${this.backgroundColorArray[this.backgroundColorIndex]}`
-        );
-        console.log(
-          "ProgressBcolor = ",
-          `var(${this.backgroundColorArray[colorIndex]}`
+          `var(${this.backgroundColorArray[this.progressBarColorIndex]}`
         );
         break;
 
@@ -306,7 +391,7 @@ class Game {
       case "poop":
         let index = 0;
         const colorLoop = setInterval(() => {
-          console.log("in the setInterval ");
+          //-- Changing the background color
           if (
             this.backgroundColorIndex <
             this.backgroundColorArray.length - 1
@@ -319,18 +404,32 @@ class Game {
             "background",
             `var(${this.backgroundColorArray[this.backgroundColorIndex]}`
           );
+
+          //-- Changing the progress bar color
+          if (
+            this.progressBarColorIndex <
+            this.backgroundColorArray.length - 1
+          ) {
+            this.progressBarColorIndex++;
+          } else {
+            this.progressBarColorIndex = 0;
+          }
+
+          this.progressBarElement.style.setProperty(
+            "background",
+            `var(${this.backgroundColorArray[this.progressBarColorIndex]}`
+          );
           index++;
 
           // stopping the colorLoop
-          if (index === 9) clearInterval(colorLoop);
-        }, 100);
-        console.log("Out of the setInterval");
+          if (index === times) clearInterval(colorLoop);
+        }, speed);
     }
   }
 
-  //Remove 5 points when shoot a star
-  removePoint() {
-    this.score -= 5;
+  //addPoints
+  addPoints(pts) {
+    this.score += pts;
     this.scoreElement.innerHTML = this.score;
   }
 
@@ -357,7 +456,7 @@ class Game {
 
     //Storing high score
     this.highScore = localStorage.getItem("highScore");
-    console.log("get ls hs", this.highScore);
+
     if (this.highScore) {
       // conditional if score is high than the previous
       if (this.highScore < this.score) {

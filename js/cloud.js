@@ -8,7 +8,7 @@ class Cloud {
     this.sizeCoef = Math.ceil(Math.random() * 3);
     this.element = document.createElement("img");
 
-    this.element.src = "../assets/img/NaughtyCloud.png";
+    this.element.src = "assets/img/NaughtyCloud.png";
     this.element.style.position = "absolute";
     this.element.style.width = `${this.width * this.sizeCoef}vw`;
     this.element.style.height = `${this.height * this.sizeCoef}vh`;
@@ -25,8 +25,8 @@ class Cloud {
   }
 
   // move the component from right to left
-  move() {
-    this.left -= 0.5;
+  move(speed) {
+    this.left -= speed;
     this.updatePosition();
   }
 }
