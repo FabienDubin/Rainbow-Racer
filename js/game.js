@@ -296,7 +296,7 @@ class Game {
       this.livesElement.innerHTML = "";
       for (let i = 0; i < this.lives; i++) {
         const newLife = document.createElement("img");
-        newLife.src = "Assets/img/Life.png";
+        newLife.src = "assets/img/Life.png";
         newLife.alt = "live";
 
         this.livesElement.appendChild(newLife);
@@ -311,7 +311,7 @@ class Game {
       this.livesElement.innerHTML = "";
       for (let i = 0; i < this.lives; i++) {
         const newLife = document.createElement("img");
-        newLife.src = "Assets/img/Life.png";
+        newLife.src = "assets/img/Life.png";
         newLife.alt = "live";
 
         this.livesElement.appendChild(newLife);
@@ -334,7 +334,7 @@ class Game {
       this.poopsElement.innerHTML = "";
       for (let i = 0; i < this.poop; i++) {
         const newLife = document.createElement("img");
-        newLife.src = "Assets/img/Poop.png";
+        newLife.src = "assets/img/Poop.png";
         newLife.alt = "poop";
         this.poopsElement.appendChild(newPoop);
         //--Player blink---/
@@ -346,7 +346,7 @@ class Game {
       this.poopsElement.innerHTML = "";
       for (let i = 0; i < this.poop; i++) {
         const newPoop = document.createElement("img");
-        newPoop.src = "Assets/img/Poop.png";
+        newPoop.src = "assets/img/Poop.png";
         newPoop.alt = "poop";
 
         this.poopsElement.appendChild(newPoop);
