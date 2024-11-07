@@ -31,17 +31,21 @@ window.onload = function () {
     switch (event.code) {
       case "ArrowUp":
         myGame.player.directionY = -1;
+        myGame.player.flappingSound.play();
 
         break;
       case "ArrowDown":
         myGame.player.directionY = 1;
+        myGame.player.flappingSound.play();
 
         break;
       case "ArrowLeft":
         myGame.player.directionX = -1;
+        myGame.player.flappingSound.play();
         break;
       case "ArrowRight":
         myGame.player.directionX = 1;
+        myGame.player.flappingSound.play();
         break;
 
       case "Space":
@@ -50,16 +54,21 @@ window.onload = function () {
           const starTop = myGame.player.top + 2;
           myGame.stars.push(new Star(starLeft, starTop));
           myGame.addPoints(-5);
+          myGame.shootStar.play();
         }
         break;
       case "KeyP":
         console.log("P pressed", event.code);
         if (myGame.poop > 0) {
+          myGame.poopPush.play();
           myGame.poop--;
           // const starLeft = myGame.player.left - 6;
           // const starTop = myGame.player.top + 3;
           myGame.poops.push(new Poop(50, 0));
           myGame.addPoints(100);
+          myGame.poopPush.addEventListener("ended", (event) => {
+            // myGame.music.play();
+          });
         }
         break;
     }

@@ -25,7 +25,7 @@ class Poop {
 
   // move the component from right to left
   move() {
-    this.top += 0.7;
+    this.top += 1;
     this.updatePosition();
   }
 }

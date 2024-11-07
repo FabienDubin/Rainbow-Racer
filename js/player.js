@@ -26,6 +26,9 @@ class Player {
 
     this.gameScreen.appendChild(this.element);
 
+    this.flappingSound = new Audio("assets/sound/Flapping4.mp3");
+    this.flappingSound.volume = 0.05;
+
     this.flappingWings();
   }
 

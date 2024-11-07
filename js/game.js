@@ -11,6 +11,7 @@ class Game {
     this.highScoreElement = document.querySelector("#high-score");
     this.timerElement = document.querySelector("#timer");
     this.progressBarElement = document.querySelector("#progressBar");
+    this.progressBarBGElement = document.querySelector("#progress");
 
     this.player = new Player(this.gameScreen, 2, 50, 6, 8);
     // Check if height and width in % are ok
@@ -46,6 +47,7 @@ class Game {
 
     this.music = new Audio("assets/sound/RainbowRaceTheme.mp3");
     this.music.volume = 0.1;
+    this.music.loop = true;
     this.cloudPop = new Audio("assets/sound/Cloud.wav");
     this.cloudPop.volume = 0.2;
     this.poopPush = new Audio("assets/sound/DropPoop.wav");
@@ -58,8 +60,14 @@ class Game {
     this.getLife.volume = 0.2;
     this.shootStar = new Audio("assets/sound/StarShoot.wav");
     this.shootStar.volume = 0.2;
-    this.flappingWings = new Audio("assets/sound/Flapping.wav");
-    this.shootStar.volume = 0.2;
+    this.removeLive = new Audio("assets/sound/LiveDown.wav");
+    this.removeLive.volume = 0.2;
+    this.gameOver = new Audio("assets/sound/GameOver.mp3");
+    this.gameOver.volume = 0.2;
+    this.timesUp = new Audio("assets/sound/NoMoreTime.wav");
+    this.timesUp.volume = 0.1;
+    this.rainbowSound = new Audio("assets/sound/Rainbows.mp3");
+    this.rainbowSound.volume = 0.2;
   }
 
   start() {
@@ -149,6 +157,8 @@ class Game {
         //Remove ball from the DOM
         oneBall.element.remove();
         this.balls.splice(oneBallIndex, 1);
+        //Play sound
+        this.getBall.play();
 
         //Adds points to the score
         this.score += oneBall.points;
@@ -173,13 +183,16 @@ class Game {
         //Remove rainbow from the DOM
         oneRainbow.element.remove();
         this.rainbows.splice(oneRainbowIndex, 1);
+        //Play Sound
+        this.rainbowSound.play();
 
         //Increment in the poop counter
         this.rainbowCounter++;
         if (this.rainbowCounter === 3) {
           this.poop++;
-          console.log("poop++", this.poop);
+          this.getPoop.play();
           this.updatePoops(1);
+          this;
           this.rainbowCounter = 0;
         }
 
@@ -187,7 +200,7 @@ class Game {
         // this.lives++;
         // this.updateLives(1);
 
-        //Full fill remainingTime
+        //Full fill remainingTime and more...
         this.remainingTime += this.setTimer;
         this.updateCountdown();
 
@@ -209,6 +222,7 @@ class Game {
     ///⭐️----------STARS----------------⭐️//
     this.stars.forEach((oneStar, oneStarIndex) => {
       oneStar.move();
+
       this.clouds.forEach((oneCloud, oneCloudIndex) => {
         // If a star hit a cloud
         if (oneStar.didCollide(oneCloud)) {
@@ -221,6 +235,8 @@ class Game {
           // Remove the cloud from the DOM and the array of clouds
           this.clouds.splice(oneCloudIndex, 1);
           oneCloud.element.remove();
+          //Play sound
+          this.cloudPop.play();
           //Adds time to remainingTime
           this.remainingTime += 15;
           this.updateCountdown();
@@ -233,7 +249,7 @@ class Game {
       onePoop.move();
       this.updatePoops(-1);
       //Full fill remainingTime
-      this.remainingTime = this.setTimer * 2;
+      this.remainingTime += this.setTimer;
       this.clouds.forEach((oneCloud, oneCloudIndex) => {
         //XXXX Stop the cloud
         oneCloud.move(0);
@@ -243,6 +259,8 @@ class Game {
         //Remove all the clouds
         this.clouds.splice(oneCloudIndex, 1);
         oneCloud.element.remove();
+        //Play sound
+        this.cloudPop.play();
       });
       // Remove the poop from the array and the DOM
 
@@ -270,16 +288,15 @@ class Game {
 
     //💔-------Remove a life when remaingtime = 0-------💔//
     if (this.remainingTime === 0) {
-      if (this.poop < 0) {
+      if (this.poop > 0) {
         this.poop--;
         this.updatePoops(-1);
-        this.remainingTime += 20;
+        this.remainingTime += 70;
+      } else {
+        this.lives--;
+        this.updateLives(-1);
+        this.remainingTime += 100;
       }
-
-      this.lives--;
-      this.updateLives(-1);
-      this.remainingTime += 10;
-
       this.updateCountdown();
     }
 
@@ -300,8 +317,9 @@ class Game {
         newLife.alt = "live";
 
         this.livesElement.appendChild(newLife);
-        //--Player blink---/
+        //--Player blink and play sound---/
         this.player.element.classList.add("blink");
+        this.removeLive.play();
         setTimeout(() => {
           this.player.element.classList.remove("blink");
         }, 1000);
@@ -315,8 +333,9 @@ class Game {
         newLife.alt = "live";
 
         this.livesElement.appendChild(newLife);
-        //--Player blink---/
+        //--Live blink and play sound---/
         this.livesElement.classList.add("blink");
+        this.getLife.play();
         setTimeout(() => {
           // this.livesElement.element.classList.remove("blink");
           this.livesElement.classList.remove("blink");
@@ -365,8 +384,25 @@ class Game {
       let remaininTimeCoef = (this.remainingTime / this.setTimer) * 100;
 
       this.progressBarElement.style.width = `${remaininTimeCoef}%`;
-      if (this.remainingTime === 0) {
+      if (this.remainingTime > 30) {
+        this.music.play;
+        this.timesUp.pause();
+        this.progressBarElement.classList.remove("blink");
+        this.progressBarBGElement.classList.remove("blink");
+        this.progressBarElement.style.setProperty(
+          "background",
+          `var(${this.backgroundColorArray[this.progressBarColorIndex]}`
+        );
+      } else if (this.remainingTime < 30 && this.remainingTime > 0) {
+        this.progressBarElement.classList.add("blink");
+        this.progressBarBGElement.classList.add("blink");
+        this.progressBarElement.style.setProperty("background", `red`);
+        this.music.pause();
+        this.timesUp.play();
+      } else if (this.remainingTime === 0) {
         clearInterval(this.timer);
+        this.timesUp.pause();
+        this.music.play();
       }
     }, 1000);
   }
@@ -455,8 +491,16 @@ class Game {
       cloud.element.remove();
     });
 
+    //Stops the countdown
+    this.remainingTime = 1;
+    this.updateCountdown();
+
+    //Play Sound
+    this.gameOver.play();
     //set gameIsOver to true
     this.gameIsOver = true;
+    //Ends the music =
+    this.music.loop = false;
 
     // Displays player's score
     this.finalScoreElement.innerText = this.score;
