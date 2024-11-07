@@ -20,6 +20,8 @@ class Game {
     this.height = 100;
     this.width = 100;
     this.clouds = [];
+    this.cloudSpeedArray = [0.6, 0.9, 1.2];
+    this.cloudSpeed = this.cloudSpeedArray[0];
     this.balls = [];
     this.rainbows = [];
     this.rainbowCounter = 0;
@@ -124,18 +126,34 @@ class Game {
     }
 
     //🌩️ generating clouds 🌩️
-    if (this.frames % 90 === 0) {
-      this.clouds.push(new Cloud(this.gameScreen));
-      //show Space Toast on first cloud
-      if (!this.toastSpaceStatus) {
-        setTimeout(() => {
-          this.showToast("space");
-        }, 3000);
+    if (this.remainingTime > this.setTimer * 3) {
+      if (this.frames % 60 === 0) {
+        this.clouds.push(new Cloud(this.gameScreen));
+        this.cloudSpeed = this.cloudSpeedArray[2];
+        console.log("####################HIGH CLOUD SPEED###################");
+      }
+    } else if (this.remainingTime > this.setTimer * 2) {
+      if (this.frames % 60 === 0) {
+        console.log("new cloud");
+        this.clouds.push(new Cloud(this.gameScreen));
+        this.cloudSpeed = this.cloudSpeedArray[1];
+      }
+    } else {
+      if (this.frames % 90 === 0) {
+        console.log("new cloud");
+        this.clouds.push(new Cloud(this.gameScreen));
+        this.cloudSpeed = this.cloudSpeedArray[0];
+        //show Space Toast on first cloud
+        if (!this.toastSpaceStatus) {
+          setTimeout(() => {
+            this.showToast("space");
+          }, 3000);
+        }
       }
     }
 
     //🎈 generating balls 🎈
-    if (this.frames % 120 === 0) {
+    if (this.frames % 60 === 0) {
       this.balls.push(new Ball(this.gameScreen));
     }
 
@@ -153,7 +171,7 @@ class Game {
     ////🌩️---------CLOUDS----------------🌩️///
     //Checking collision with a cloud if the wloud is on screen
     this.clouds.forEach((oneCloud, oneCloudIndex) => {
-      oneCloud.move(0.5);
+      oneCloud.move(this.cloudSpeed);
 
       if (this.player.didCollide(oneCloud)) {
         //Remove cloud from the DOM
@@ -194,7 +212,7 @@ class Game {
         this.scoreElement.innerText = this.score;
 
         //Adds time to remainingTime
-        this.remainingTime += 10;
+        this.remainingTime += 15;
         this.updateCountdown();
 
         // if the ball did not collide
@@ -272,9 +290,16 @@ class Game {
           oneCloud.element.remove();
           //Play sound
           this.cloudPop.play();
-          //Adds time to remainingTime
-          this.remainingTime += 15;
-          this.updateCountdown();
+          //Adds time to remainingTime depending on the cloud speed
+          if (this.cloudSpeed === this.cloudSpeedArray[2]) {
+            this.remainingTime += 45;
+            this.updateCountdown();
+            //Add extra points
+            this.score += oneStar.points;
+            this.scoreElement.innerText = this.score;
+          } else if (this.cloudSpeed === this.cloudSpeedArray[1]) {
+            this.remainingTime += 30;
+          } else this.remainingTime += 20;
         }
       });
     });
@@ -327,11 +352,11 @@ class Game {
       if (this.poop > 0) {
         this.poop--;
         this.updatePoops(-1);
-        this.remainingTime += 70;
+        this.remainingTime += this.setTimer;
       } else {
         this.lives--;
         this.updateLives(-1);
-        this.remainingTime += 100;
+        this.remainingTime += this.setTimer * 2;
       }
       this.updateCountdown();
     }

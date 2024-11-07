@@ -16,6 +16,12 @@ class Cloud {
     this.element.style.top = `${this.top}vh`;
 
     this.gameScreen.appendChild(this.element);
+
+    this.speedArr = [
+      0.5, 0.3, 0.7, 1.5, 0.5, 0.3, 0.4, 1, 0.5, 0.5, 0.5, 0.3, 0.1, 0.5, 1,
+      0.7, 0.8, 0.9,
+    ];
+    this.speedArrIndex = Math.ceil(Math.random() * this.speedArr.length - 1);
   }
 
   // Update component position
@@ -25,8 +31,8 @@ class Cloud {
   }
 
   // move the component from right to left
-  move(speed) {
-    this.left -= speed;
+  move(speedCoef) {
+    this.left -= this.speedArr[this.speedArrIndex] * speedCoef;
     this.updatePosition();
   }
 }
