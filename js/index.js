@@ -26,8 +26,6 @@ window.onload = function () {
   //Keyboard listening to control the player
   //When a key is pressed
   document.addEventListener("keydown", (event) => {
-    // console.log("key pressed!", event.code);
-
     switch (event.code) {
       case "ArrowUp":
         myGame.player.directionY = -1;
@@ -87,9 +85,5 @@ window.onload = function () {
         myGame.player.directionX = 0;
         break;
     }
-
-    // !!!!Extra features!!!!
-
-    //   case "KeyP" :
   });
 };

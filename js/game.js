@@ -1,5 +1,6 @@
 class Game {
   constructor() {
+    //____DOM ELEMENTS-----///
     this.startScreen = document.querySelector("#welcome-screen");
     this.gameScreen = document.querySelector("#game-screen");
     this.gameEndScreen = document.querySelector("#end-screen");
@@ -14,11 +15,10 @@ class Game {
     this.progressBarBGElement = document.querySelector("#progress");
     this.toastElement = document.querySelector("#toast");
 
+    //---IN GAME OBJECTS------///
     this.player = new Player(this.gameScreen, 2, 50, 6, 8);
-    // Check if height and width in % are ok
     this.height = 100;
     this.width = 100;
-
     this.clouds = [];
     this.balls = [];
     this.rainbows = [];
@@ -45,7 +45,7 @@ class Game {
     ];
     this.backgroundColorIndex = 0;
     this.progressBarColorIndex = this.backgroundColorIndex + 1;
-
+    //-----SOUNDS-----//
     this.music = new Audio("assets/sound/RainbowRaceTheme.mp3");
     this.music.volume = 0.1;
     this.music.loop = true;
@@ -69,7 +69,10 @@ class Game {
     this.timesUp.volume = 0.1;
     this.rainbowSound = new Audio("assets/sound/Rainbows.mp3");
     this.rainbowSound.volume = 0.2;
+    this.notificationSound = new Audio("assets/sound/Notification.mp3");
+    this.notificationSound.volume = 0.2;
 
+    //------MESSAGE MGMT-------//
     this.toastOffStatus = false;
     this.toastArrowStatus = false;
     this.toastSpaceStatus = false;
@@ -78,6 +81,7 @@ class Game {
     this.toastDisplay = false;
   }
 
+  //-----METHODS-----//
   start() {
     // set the viewport of the game
     this.gameScreen.style.height = `${this.height}vh`;
@@ -136,15 +140,13 @@ class Game {
     }
 
     //🌈 generating rainbows 🌈CHANGE VALUE TO 1800
-    if (this.frames % 500 === 0) {
+    if (this.frames % 700 === 0) {
       this.rainbows.push(new Rainbow(this.gameScreen));
       //show Space Toast on first cloud
     }
   }
 
   update() {
-    // console.log("in the update");
-
     //continous update of the player's position
     this.player.move();
 
@@ -252,7 +254,7 @@ class Game {
       }
     });
 
-    ///⭐️----------STARS----------------⭐️//
+    ///⭐️----------SHOOTING STARS----------------⭐️//
     this.stars.forEach((oneStar, oneStarIndex) => {
       oneStar.move();
 
@@ -411,6 +413,7 @@ class Game {
     }
   }
 
+  //⏱️---Countdown and progressBar----⏱️//
   updateCountdown() {
     this.timer = setInterval(() => {
       this.remainingTime--;
@@ -441,7 +444,9 @@ class Game {
     }, 1000);
   }
 
-  //Change Background color
+  //🎇--------Change Background color------🎇//
+  //-Dependiing on the game event (rainbow, poop), -----//
+  //-speed of the change and number of loop iterations -//
   changeBackground(arg, speed, times) {
     switch (arg) {
       //Rainbows as argument
@@ -456,8 +461,8 @@ class Game {
           "background",
           `var(${this.backgroundColorArray[this.backgroundColorIndex]}`
         );
-        //-- Changing the progress bar color
 
+        //-- Changing the progress bar color
         if (this.progressBarColorIndex < this.backgroundColorArray.length - 1) {
           this.progressBarColorIndex++;
         } else {
@@ -510,12 +515,12 @@ class Game {
     }
   }
 
-  //addPoints
+  //🎉-----Add point on game event----🎉//
   addPoints(pts) {
     this.score += pts;
     this.scoreElement.innerHTML = this.score;
   }
-  //Display toast to help the player
+  //🥪---Display toast to help the player--🥪//
   showToast(msg) {
     if (this.toastOffStatus) return;
 
@@ -554,14 +559,15 @@ class Game {
     }
     this.toastElement.appendChild(newToast);
     this.toastElement.style.visibility = "visible";
+    this.notificationSound.play();
     setTimeout(() => {
       this.toastElement.style.visibility = "hidden";
       this.toastElement.removeChild(newToast);
       // this.toastDisplay = false;
-    }, 4000);
+    }, 5000);
   }
 
-  //Ending game when lives = 0
+  //💀----Ending game when lives = 0---💀/
   endGame() {
     // removes the player from the game screen
     this.player.element.remove();

@@ -15,8 +15,6 @@ class Player {
     this.currentPlayerImgIndex = 0;
     this.element = document.createElement("img");
 
-    // src to be updated to have animated wings
-    // !!!!!!!!!! POSSIBLE BUG ON POSITIONING DUE TO VH VW
     this.element.src = this.playerImg[this.currentPlayerImgIndex];
     this.element.style.position = "absolute";
     this.element.style.left = `${left}vw`;
@@ -61,6 +59,7 @@ class Player {
 
     this.updatePosition();
   }
+
   // update player's position
   updatePosition() {
     this.element.style.left = `${this.left}vw`;
@@ -83,6 +82,7 @@ class Player {
     }
   }
 
+  //--Loop for flapping Wings----//
   flappingWings() {
     setInterval(() => {
       if (this.currentPlayerImgIndex === this.playerImg.length - 1) {
