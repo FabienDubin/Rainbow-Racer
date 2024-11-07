@@ -46,7 +46,6 @@ class Game {
 
     this.music = new Audio("assets/sound/RainbowRaceTheme.mp3");
     this.music.volume = 0.1;
-    this.
   }
 
   start() {
