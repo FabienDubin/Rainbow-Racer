@@ -46,6 +46,20 @@ class Game {
 
     this.music = new Audio("assets/sound/RainbowRaceTheme.mp3");
     this.music.volume = 0.1;
+    this.cloudPop = new Audio("assets/sound/Cloud.wav");
+    this.cloudPop.volume = 0.2;
+    this.poopPush = new Audio("assets/sound/DropPoop.wav");
+    this.poopPush.volume = 0.2;
+    this.getBall = new Audio("assets/sound/getBall.wav");
+    this.getBall.volume = 0.2;
+    this.getPoop = new Audio("assets/sound/GotPoop.wav");
+    this.getPoop.volume = 0.2;
+    this.getLife = new Audio("assets/sound/LifeUp.wav");
+    this.getLife.volume = 0.2;
+    this.shootStar = new Audio("assets/sound/StarShoot.wav");
+    this.shootStar.volume = 0.2;
+    this.flappingWings = new Audio("assets/sound/Flapping.wav");
+    this.shootStar.volume = 0.2;
   }
 
   start() {
