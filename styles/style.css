@@ -168,11 +168,11 @@ h4 {
 
 #time-control {
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: block;
   margin-right: 20px;
+  /* flex-direction: column;
+  justify-content: center;
+  align-items: center; */
 }
 
 #progress {
@@ -192,6 +192,21 @@ h4 {
   border-radius: 20px;
 }
 
+#toast {
+  position: fixed;
+  bottom: -10px;
+  right: 0px;
+  z-index: 1000;
+  padding: 10px;
+  visibility: hidden;
+  /* opacity: 1;
+  transition: opacity 3s ease-in-out; */
+}
+
+#toast img {
+  height: 40vh;
+}
+
 .blink {
   animation: blinker 0.2s cubic-bezier(0.5, 0, 1, 1) infinite;
 }
@@ -202,8 +217,20 @@ h4 {
   }
 }
 
-.hidden {
+#welcome-screen h1 {
+  position: fixed;
+  bottom: -10px;
+  right: 0px;
+  z-index: 1000;
+  padding: 10px;
+}
+
+/* .hidden {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s 1s, opacity 1s linear;
 }
+
+.show {
+  visibility: visible;
+  opacity: 1;
+} */

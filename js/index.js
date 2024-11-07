@@ -58,7 +58,6 @@ window.onload = function () {
         }
         break;
       case "KeyP":
-        console.log("P pressed", event.code);
         if (myGame.poop > 0) {
           myGame.poopPush.play();
           myGame.poop--;

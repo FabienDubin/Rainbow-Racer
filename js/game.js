@@ -12,6 +12,7 @@ class Game {
     this.timerElement = document.querySelector("#timer");
     this.progressBarElement = document.querySelector("#progressBar");
     this.progressBarBGElement = document.querySelector("#progress");
+    this.toastElement = document.querySelector("#toast");
 
     this.player = new Player(this.gameScreen, 2, 50, 6, 8);
     // Check if height and width in % are ok
@@ -29,7 +30,7 @@ class Game {
     this.poops = [];
     this.poop = 0;
     this.timer = null;
-    this.setTimer = 90;
+    this.setTimer = 150;
     this.remainingTime = this.setTimer;
     this.gameIsOver = false;
     this.gameIntervalId;
@@ -68,6 +69,13 @@ class Game {
     this.timesUp.volume = 0.1;
     this.rainbowSound = new Audio("assets/sound/Rainbows.mp3");
     this.rainbowSound.volume = 0.2;
+
+    this.toastOffStatus = false;
+    this.toastArrowStatus = false;
+    this.toastSpaceStatus = false;
+    this.toastRainbowStatus = false;
+    this.toastPoopStatus = false;
+    this.toastDisplay = false;
   }
 
   start() {
@@ -99,6 +107,13 @@ class Game {
     this.frames++;
     this.update();
 
+    // // show toast Arrows
+    // if (!this.toastArrowStatus) {
+    //   setTimeout(() => {
+    //     this.showToast("arrow");
+    //   }, 500);
+    // }
+
     //stops the loop if this.gameIsOver = true
     if (this.gameIsOver) {
       clearInterval(this.gameIntervalId);
@@ -107,6 +122,12 @@ class Game {
     //🌩️ generating clouds 🌩️
     if (this.frames % 90 === 0) {
       this.clouds.push(new Cloud(this.gameScreen));
+      //show Space Toast on first cloud
+      if (!this.toastSpaceStatus) {
+        setTimeout(() => {
+          this.showToast("space");
+        }, 3000);
+      }
     }
 
     //🎈 generating balls 🎈
@@ -117,6 +138,7 @@ class Game {
     //🌈 generating rainbows 🌈CHANGE VALUE TO 1800
     if (this.frames % 500 === 0) {
       this.rainbows.push(new Rainbow(this.gameScreen));
+      //show Space Toast on first cloud
     }
   }
 
@@ -137,6 +159,11 @@ class Game {
         this.clouds.splice(oneCloudIndex, 1);
         this.lives--;
         this.updateLives(-1);
+
+        //Reduce timer if remaing time is > the setTimer
+        if (this.remainingTime > this.setTimer) {
+          this.remainingTime = this.setTimer;
+        }
 
         // if the cloud did not collide
       } else if (oneCloud.left < -100) {
@@ -186,6 +213,9 @@ class Game {
         //Play Sound
         this.rainbowSound.play();
 
+        //Rainbow Toast
+        if (!this.toastRainbowStatus) this.showToast("rainbow");
+
         //Increment in the poop counter
         this.rainbowCounter++;
         if (this.rainbowCounter === 3) {
@@ -194,6 +224,9 @@ class Game {
           this.updatePoops(1);
           this;
           this.rainbowCounter = 0;
+          setTimeout(() => {
+            if (!this.toastPoopStatus) this.showToast("poop");
+          }, 2000);
         }
 
         // //Add one extra live
@@ -247,6 +280,7 @@ class Game {
     //💩--------------POOP------------------💩//
     this.poops.forEach((onePoop, onePoopIndex) => {
       onePoop.move();
+      this.changeBackground("poop", 100, 5);
       this.updatePoops(-1);
       //Full fill remainingTime
       this.remainingTime += this.setTimer;
@@ -262,8 +296,8 @@ class Game {
         //Play sound
         this.cloudPop.play();
       });
-      // Remove the poop from the array and the DOM
 
+      // Remove the poop from the array and the DOM
       if (onePoop.top > 85) {
         onePoop.element.classList.add("hidden");
         this.poops.splice(onePoopIndex, 1);
@@ -352,9 +386,9 @@ class Game {
     if (arg === -1) {
       this.poopsElement.innerHTML = "";
       for (let i = 0; i < this.poop; i++) {
-        const newLife = document.createElement("img");
-        newLife.src = "assets/img/Poop.png";
-        newLife.alt = "poop";
+        const newPoop = document.createElement("img");
+        newPoop.src = "assets/img/Poop.png";
+        newPoop.alt = "poop";
         this.poopsElement.appendChild(newPoop);
         //--Player blink---/
         this.changeBackground("poop", 100, 15);
@@ -480,6 +514,51 @@ class Game {
   addPoints(pts) {
     this.score += pts;
     this.scoreElement.innerHTML = this.score;
+  }
+  //Display toast to help the player
+  showToast(msg) {
+    if (this.toastOffStatus) return;
+
+    // //Check if a toast is already displayed
+    // if (this.toastElement.firstChild) {
+    //   this.toastElement.removeChild(this.toastElement.firstChild);
+    // }
+
+    const newToast = document.createElement("img");
+    switch (msg) {
+      case "arrow":
+        if (this.toastArrowStatus) return;
+        newToast.src = "assets/img/arrowToast.png";
+        newToast.alt = "Arrows";
+        this.toastArrowStatus = true;
+        break;
+      case "space":
+        if (this.toastSpaceStatus) return;
+        newToast.src = "assets/img/spaceToast.png";
+        newToast.alt = "rainbow";
+        this.toastSpaceStatus = true;
+        break;
+      case "rainbow":
+        if (this.toastRainbowStatus) return;
+        console.log("ask for rainbow");
+        newToast.src = "assets/img/rainbowToast.png";
+        newToast.alt = "rainbow";
+        this.toastRainbowStatus = true;
+        break;
+      case "poop":
+        if (this.toastPoopStatus) return;
+        newToast.src = "assets/img/poopToast.png";
+        newToast.alt = "Poop";
+        this.toastPoopStatus = true;
+        break;
+    }
+    this.toastElement.appendChild(newToast);
+    this.toastElement.style.visibility = "visible";
+    setTimeout(() => {
+      this.toastElement.style.visibility = "hidden";
+      this.toastElement.removeChild(newToast);
+      // this.toastDisplay = false;
+    }, 4000);
   }
 
   //Ending game when lives = 0

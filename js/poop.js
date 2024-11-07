@@ -1,8 +1,8 @@
 class Poop {
   constructor(positionX, positionY) {
     this.gameScreen = document.querySelector("#game-screen");
-    this.height = 7;
-    this.width = 5;
+    this.height = 10;
+    this.width = 7;
     this.left = positionX;
     this.top = positionY;
     this.points = 100;
