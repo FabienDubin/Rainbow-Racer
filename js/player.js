@@ -32,7 +32,7 @@ class Player {
 
   //methods
   move() {
-    // update player's position when move
+    // update player's position when move//
     this.left += this.directionX;
     this.top += this.directionY;
 
