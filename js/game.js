@@ -32,7 +32,8 @@ class Game {
     this.poops = [];
     this.poop = 0;
     this.timer = null;
-    this.setTimer = 150;
+    this.setTimer = 180;
+    this.delay = 1000;
     this.remainingTime = this.setTimer;
     this.gameIsOver = false;
     this.gameIntervalId;
@@ -183,6 +184,9 @@ class Game {
         //Reduce timer if remaing time is > the setTimer
         if (this.remainingTime > this.setTimer) {
           this.remainingTime = this.setTimer;
+          // Reduce timer delay
+          this.delay -= 400;
+          this.updateCountdown();
         }
 
         // if the cloud did not collide
@@ -232,6 +236,10 @@ class Game {
         this.rainbows.splice(oneRainbowIndex, 1);
         //Play Sound
         this.rainbowSound.play();
+        //Adjust the countdown delay
+        if (this.delay < 1000) {
+          this.delay = 1000;
+        }
 
         //Rainbow Toast
         if (!this.toastRainbowStatus) this.showToast("rainbow");
@@ -299,7 +307,9 @@ class Game {
             this.scoreElement.innerText = this.score;
           } else if (this.cloudSpeed === this.cloudSpeedArray[1]) {
             this.remainingTime += 30;
+            this.updateCountdown();
           } else this.remainingTime += 20;
+          this.updateCountdown();
         }
       });
     });
@@ -311,6 +321,7 @@ class Game {
       this.updatePoops(-1);
       //Full fill remainingTime
       this.remainingTime += this.setTimer;
+      this.updateCountdown();
       this.clouds.forEach((oneCloud, oneCloudIndex) => {
         //XXXX Stop the cloud
         oneCloud.move(0);
@@ -440,6 +451,11 @@ class Game {
 
   //⏱️---Countdown and progressBar----⏱️//
   updateCountdown() {
+    //--Check if interval is running when update
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+
     this.timer = setInterval(() => {
       this.remainingTime--;
       // this.timerElement.innerHTML = this.remainingTime;
@@ -466,7 +482,7 @@ class Game {
         this.timesUp.pause();
         this.music.play();
       }
-    }, 1000);
+    }, this.delay);
   }
 
   //🎇--------Change Background color------🎇//
