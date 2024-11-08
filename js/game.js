@@ -128,7 +128,7 @@ class Game {
 
     //🌩️ generating clouds 🌩️
     if (this.remainingTime > this.setTimer * 3) {
-      if (this.frames % 60 === 0) {
+      if (this.frames % 50 === 0) {
         this.clouds.push(new Cloud(this.gameScreen));
         this.cloudSpeed = this.cloudSpeedArray[2];
         console.log("####################HIGH CLOUD SPEED###################");
@@ -262,8 +262,11 @@ class Game {
         // this.updateLives(1);
 
         //Full fill remainingTime and more...
-        this.remainingTime += this.setTimer;
-        this.updateCountdown();
+        if (this.remainingTime < this.setTimer * 2) {
+          this.remainingTime += this.setTimer;
+          console.log("Time added");
+          this.updateCountdown();
+        }
 
         //Adds points to the score
         this.score += oneRainbow.points;
@@ -300,15 +303,15 @@ class Game {
           this.cloudPop.play();
           //Adds time to remainingTime depending on the cloud speed
           if (this.cloudSpeed === this.cloudSpeedArray[2]) {
-            this.remainingTime += 45;
+            this.remainingTime += 35;
             this.updateCountdown();
             //Add extra points
             this.score += oneStar.points;
             this.scoreElement.innerText = this.score;
           } else if (this.cloudSpeed === this.cloudSpeedArray[1]) {
-            this.remainingTime += 30;
+            this.remainingTime += 20;
             this.updateCountdown();
-          } else this.remainingTime += 20;
+          } else this.remainingTime += 10;
           this.updateCountdown();
         }
       });
