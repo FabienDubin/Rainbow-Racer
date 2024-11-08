@@ -32,7 +32,7 @@ class Game {
     this.poops = [];
     this.poop = 0;
     this.timer = null;
-    this.setTimer = 180;
+    this.setTimer = 120;
     this.delay = 1000;
     this.remainingTime = this.setTimer;
     this.gameIsOver = false;
@@ -185,7 +185,7 @@ class Game {
         if (this.remainingTime > this.setTimer) {
           this.remainingTime = this.setTimer;
           // Reduce timer delay
-          this.delay -= 400;
+          this.delay -= 300;
           this.updateCountdown();
         }
 
