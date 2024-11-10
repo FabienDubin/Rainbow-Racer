@@ -30,12 +30,12 @@
 
 ## 📍 Overview
 
-Rainbow Race is my first project from Ironhack's web development bootcamp. I was able to apply all the knowledge I acquired during the first two weeks of the program. The brief was clear : Create a browser-based game using HTML, CSS, JavaScript, DOM manipulation, and Object-Oriented Programming (OOP).
+Rainbow Race is my first project from Ironhack's web development bootcamp. I was able to apply all the knowledge I acquired during the first two weeks of the program. The brief was clear: Create a browser-based game using HTML, CSS, JavaScript, DOM manipulation, and Object-Oriented Programming (OOP).
 The purpose of this project is to consolidate and practice all the knowledge acquired in the module.
 
-I designed it thinking of my 4-years-od daughter who's passionate in unicorn and colorfull rainbows.
+I designed it thinking about my 4-year-old daughter who's passionate about unicorns and colorful rainbows.
 
-It is an immersive gaming experience where players navigate through a vibrant, dynamic world filled with colorful rainbows, clouds, stars, and other visual wonders. With its seamless user interface and its engaging gameplay, this project offers an exciting adventure for gamers of all ages, perfect for those seeking a fun and captivating experience.
+It's an immersive gaming experience where players navigate through a vibrant, dynamic world filled with colorful rainbows, clouds, stars, and other visual wonders. With its seamless user interface and engaging gameplay, this project offers an exciting adventure for gamers of all ages – perfect for those seeking a fun and captivating experience.
 
 ## <div align="center"><img src="./assets/img/RainbowRacerSnapshot.gif" /></div>
 
